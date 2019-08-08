@@ -31,13 +31,13 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
          vx=x_state(2),
          vy=x_state(3);
   
-  double root_pxy = sqrt(px*px + py*py);         
+  double root_pxy = sqrt(px*px + py*py);
 
   MatrixXd Hj(3,4);
 
   Hj << px/root_pxy, py/root_pxy, 0, 0,
-              -py/(px*px+py*py), px/(px*px+py*py), 0, 0,
-              py*(vx*py-vy*px)/pow(root_pxy,3), px*(vy*px-vx*py)/pow(root_pxy,3), px/root_pxy, py/root_pxy;
+        -py/(px*px+py*py), px/(px*px+py*py), 0, 0,
+        py*(vx*py-vy*px)/pow(root_pxy,3), px*(vy*px-vx*py)/pow(root_pxy,3), px/root_pxy, py/root_pxy;
 
   return Hj;
 }

@@ -126,7 +126,8 @@ int main() {
           estimate(3) = v2;
         
           estimations.push_back(estimate);
-
+          std::cout << "estimate: \n" << estimate << std::endl;
+          std::cout << "ground truth: \n" << gt_values << std::endl;
           VectorXd RMSE = tools.CalculateRMSE(estimations, ground_truth);
 
           json msgJson;

@@ -29,6 +29,7 @@ void KalmanFilter::Init(VectorXd &x_in, MatrixXd &P_in, MatrixXd &F_in,
 void KalmanFilter::Predict() {
   x_ = F_*x_;
   P_ = F_*P_*F_.transpose() + Q_;
+  std::cout << "x_inter: " << x_ << std::endl << std::endl;
 }
 
 void KalmanFilter::Update(const VectorXd &z) {
@@ -44,8 +45,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   h << sqrt(x_(0)*x_(0) + x_(1)*x_(1)),
        atan2(x_(1),x_(0)),
        (x_(0)*x_(2) + x_(1)*x_(3))/sqrt(x_(0)*x_(0) + x_(1)*x_(1));
-  std::cout << "h(x'): " << std::endl << h << std::endl;
-  std::cout << "z: " << std::endl << z << std::endl;
+  
   MatrixXd y = z - h;
   while (y(1) > M_PI || y(1) < -M_PI){
     if (y(1) < -M_PI)

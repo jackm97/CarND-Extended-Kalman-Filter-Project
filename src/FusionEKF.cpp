@@ -70,8 +70,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     ekf_.x_ = VectorXd(4);
     ekf_.x_ << 1, 1, 1, 1;
     ekf_.P_ = MatrixXd(4,4);
-    ekf_.P_ << 10,0,0,0,
-               0,10,0,0,
+    ekf_.P_ << 1,0,0,0,
+               0,1,0,0,
                0,0,10,0,
                0,0,0,10;
     previous_timestamp_ = measurement_pack.timestamp_;
@@ -84,8 +84,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
              rho_dot=measurement_pack.raw_measurements_(2);
       ekf_.x_(0) = rho*cos(phi);
       ekf_.x_(1) = rho*sin(phi);
-      ekf_.x_(2) = 0;
-      ekf_.x_(3) = 0;      
+      ekf_.x_(2) = rho_dot*cos(phi);
+      ekf_.x_(3) = rho_dot*sin(phi);      
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       // TODO: Initialize state.
@@ -119,10 +119,10 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
              0, 0, 1, 0,
              0, 0, 0, 1;
   ekf_.Q_ = MatrixXd(4,4);
-  ekf_.Q_ << pow(dt,4)/4*81., 0, pow(dt,3)/2*81., 0,
-             0, pow(dt,4)/4*81., 0, pow(dt,2)/2*81.,
-             pow(dt,3)/2*81., 0, pow(dt,2)*81., 0,
-             0, pow(dt,3)/2*81., 0, pow(dt,2)*81.;
+  ekf_.Q_ << pow(dt,4)/4*9., 0, pow(dt,3)/2*9., 0,
+             0, pow(dt,4)/4*9., 0, pow(dt,2)/2*9.,
+             pow(dt,3)/2*9., 0, pow(dt,2)*9., 0,
+             0, pow(dt,3)/2*9., 0, pow(dt,2)*9.;
   ekf_.Predict();
 
   /**
